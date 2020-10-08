@@ -17,4 +17,4 @@ build:	$(OBJS)
 package: build
 	rm -rf dist/
 	cp bin dist -r -v
-	cp scripts dist
+	cp scripts dist -r
