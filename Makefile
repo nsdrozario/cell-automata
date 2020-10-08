@@ -6,7 +6,7 @@ OBJ_DIR := obj/
 SRCS := $(shell find . -name "*.cpp" -exec basename {} \;)
 OBJS := $(addprefix $(OBJ_DIR),$(SRCS:%.cpp=%.o))
 
-%.o: %.cpp
+$(OBJ_DIR)%.o: %.cpp
 	$(CXX) -c $^ -o $@ $(CXXFLAGS)
 
 .PHONY: build
