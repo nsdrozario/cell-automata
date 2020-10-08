@@ -16,7 +16,7 @@ namespace cell_automata {
     };
 
     struct util {
-        static std::vector<cell> data;
+        static std::vector<std::vector<cell>> data;
         static sol::protected_function callback;
 
         static int pixel_size;

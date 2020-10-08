@@ -21,6 +21,8 @@ int main () {
     "Cellular Automata Simulation"
     );
 
+    cell_automata::graphics::init_style();
+
     while (w.isOpen()) {
         while (w.pollEvent(e)) {
             if (e.type == sf::Event::Closed) {
@@ -31,7 +33,7 @@ int main () {
                         0, 0, e.size.width, e.size.height
                     )
                 ));
-                cell_automata::graphics::resize_grid();
+                cell_automata::graphics::resize_all();
             }
         }
 
