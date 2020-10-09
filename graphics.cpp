@@ -12,6 +12,11 @@ sf::Vector2u graphics::ScreenData::screenSize;
 sf::Vector2f graphics::ScreenData::ctrlPanelSize;
 sf::Vector2f graphics::ScreenData::gridSize;
 
+bool graphics::GraphicsState::gridVisible;
+sf::Vector2u graphics::ScreenData::screenSize;
+sf::Vector2f graphics::ScreenData::ctrlPanelSize;
+sf::Vector2f graphics::ScreenData::gridSize;
+
 template <class T>
 T graphics::clamp(T x, T minimum, T maximum) {
     if (x >= minimum && x <= maximum) { // x within [minimum, maximum]
@@ -45,7 +50,7 @@ void graphics::reset_grid() {
 void graphics::resize_all() {
 
     using graphics::ScreenData;
-    
+
     ScreenData::screenSize = w.getSize();
     int panel_width = clamp<int>(ScreenData::screenSize.x/5, 50, 400);
     ScreenData::ctrlPanelSize = sf::Vector2f(static_cast<float>(panel_width), ScreenData::screenSize.y);
