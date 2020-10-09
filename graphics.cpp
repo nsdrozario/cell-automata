@@ -13,9 +13,7 @@ sf::Vector2f graphics::ScreenData::ctrlPanelSize;
 sf::Vector2f graphics::ScreenData::gridSize;
 
 bool graphics::GraphicsState::gridVisible;
-sf::Vector2u graphics::ScreenData::screenSize;
-sf::Vector2f graphics::ScreenData::ctrlPanelSize;
-sf::Vector2f graphics::ScreenData::gridSize;
+
 
 template <class T>
 T graphics::clamp(T x, T minimum, T maximum) {
