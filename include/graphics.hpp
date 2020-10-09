@@ -20,8 +20,20 @@ extern sf::Font defaultFont;
 
 namespace cell_automata {
     namespace graphics {
+
+        struct ScreenData {
+                static sf::Vector2u screenSize;
+                static sf::Vector2f ctrlPanelSize;
+                static sf::Vector2f gridSize;
+        };
+
+        struct GraphicsState {
+                static bool gridVisible;
+        };
+
         void resize_all();
         void init_style();
+        void reset_grid();
         template <class T> 
         T clamp(T x, T minimum, T maximum);
     }
