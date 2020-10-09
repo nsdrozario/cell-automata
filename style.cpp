@@ -18,26 +18,33 @@ extern sf::Font defaultFont;
 void graphics::init_style() {
 
     // ctrlPanelBody
-    ctrlPanelBody.setFillColor(sf::Color::White);
+    ctrlPanelBody.setFillColor(sf::Color(217, 219, 219));
     ctrlPanelBody.setOutlineColor(sf::Color::Black);
     ctrlPanelBody.setOutlineThickness(2.0f);
 
     // vertex arrays
     for (sf::VertexArray v : horizontalGridLines) {
-        for (int it = 0; it < v.getVertexCount(); it++) {
+        v.setPrimitiveType(sf::Lines);
+        for (size_t it = 0; it < v.getVertexCount(); it++) {
             sf::Vertex v_0 = v[it];
             v_0.color = sf::Color(sf::Color::Black);
         }
     }
     for (sf::VertexArray v : verticalGridLines) {
-        for (int it = 0; it < v.getVertexCount(); it++) {
+        v.setPrimitiveType(sf::Lines);
+        for (size_t it = 0; it < v.getVertexCount(); it++) {
             sf::Vertex v_0 = v[it];
             v_0.color = sf::Color(sf::Color::Black);
         }
     }
 
-    if (!defaultFont.loadFromFile(DEFAULT_FONT_PATH)) {
-        
-    }
+    defaultFont.loadFromFile(DEFAULT_FONT_PATH);
+
+    // text
+    runningStatus.setFont(defaultFont);
+    runningStatus.setFillColor(sf::Color::Red);
+
+    iterationCount.setFont(defaultFont);
+    iterationCount.setFillColor(sf::Color::Black);
 
 }
