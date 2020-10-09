@@ -18,3 +18,4 @@ package: build
 	rm -rf dist/
 	cp bin dist -r -v
 	cp scripts dist -r
+	cp font dist -r
