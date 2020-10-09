@@ -5,9 +5,39 @@ sf::RenderWindow w;
 sf::Event e;
 sol::state lua_state;
 
+
+/*
+
+[Elements to keep track of]
+
+// graphics elements
+extern sf::RectangleShape ctrlPanelBody;
+extern sf::Text runningStatus;
+extern sf::Text iterationCount; 
+extern std::vector<sf::VertexArray> horizontalGridLines;
+extern std::vector<sf::VertexArray> verticalGridLines;
+extern sf::Font defaultFont;
+*/
+
 void draw_main() {
 
+    // 
+    w.draw(ctrlPanelBody);
+    w.draw(runningStatus);
+    w.draw(iterationCount);
 
+    // draw squares
+    
+
+    // draw grid lines
+    if (cell_automata::graphics::GraphicsState::gridVisible) {
+        for (sf::VertexArray v : horizontalGridLines) {
+            w.draw(v);
+        }
+        for (sf::VertexArray v : verticalGridLines) {
+            w.draw(v);
+        }
+    }
 
 }
 
