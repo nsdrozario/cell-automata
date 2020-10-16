@@ -14,9 +14,9 @@ sf::Font defaultFont;
 sf::Vector2u graphics::ScreenData::screenSize;
 sf::Vector2f graphics::ScreenData::ctrlPanelSize;
 sf::Vector2f graphics::ScreenData::gridSize;
-unsigned int graphics::ScreenData::pixelSize = 16; // default value
+int graphics::ScreenData::pixelSize = 16; // default value
 
-bool graphics::GraphicsState::gridVisible;
+bool graphics::GraphicsState::gridVisible = true;
 
 
 template <class T>
@@ -28,15 +28,25 @@ T graphics::clamp(T x, T minimum, T maximum) {
     }
 }
 
+/*
 void graphics::create_grid() {
 
-    for (sf::VertexArray v : horizontalGridLines) {
+    int numLinesHorizontal = static_cast<int> (ScreenData::gridSize.x / ScreenData::pixelSize);
+    int numLinesVertical = static_cast<int> (ScreenData::gridSize.y / ScreenData::pixelSize);
+
+    horizontalGridLines.resize(numLinesHorizontal);
+    verticalGridLines.resize(numLinesVertical);
+
+    for (int i = 0; i < numLinesHorizontal; i++) {
+        sf::VertexArray v = horizontalGridLines[i];
         v.setPrimitiveType(sf::Lines);
         v.resize(2);
         v[0].color = sf::Color::Black;
         v[1].color = sf::Color::Black;
     }
-    for (sf::VertexArray v : verticalGridLines) {
+
+    for (int i = 0; i < numLinesVertical; i++) {
+        sf::VertexArray v = verticalGridLines[i];
         v.setPrimitiveType(sf::Lines);
         v.resize(2);
         v[0].color = sf::Color::Black;
@@ -44,24 +54,49 @@ void graphics::create_grid() {
     }
 
 }
+*/
 
 void graphics::reset_grid() {
 
-    unsigned int numLinesHorizontal = static_cast<unsigned int> (ScreenData::gridSize.x / ScreenData::pixelSize);
-    unsigned int numLinesVertical = static_cast<unsigned int> (ScreenData::gridSize.y / ScreenData::pixelSize);
+    int numLinesHorizontal = static_cast<int> (ScreenData::gridSize.x / ScreenData::pixelSize);
+    int numLinesVertical = static_cast<int> (ScreenData::gridSize.y / ScreenData::pixelSize);
 
     horizontalGridLines.resize(numLinesHorizontal);
     verticalGridLines.resize(numLinesVertical);
 
-    for (size_t i = 0; i < horizontalGridLines.size(); i++) {
-        sf::VertexArray currentLine = horizontalGridLines[i];
+    for (int i = 0; i < numLinesHorizontal; i++) {
+        horizontalGridLines[i] = sf::VertexArray(sf::Lines, 2);
+        if (horizontalGridLines[i].getVertexCount() != 2) {
+            horizontalGridLines[i].resize(2);
+        }
         float maxYCoord = ScreenData::gridSize.y;
-        float currentXCoord;
-        currentLine[0] = sf::Vector2f();
+        float currentXCoord = ScreenData::ctrlPanelSize.x + (i * ScreenData::pixelSize);
+        horizontalGridLines[i][0] = sf::Vertex(
+            sf::Vector2f(currentXCoord+0.5, 0.5),
+            sf::Color::Black
+        );
+        horizontalGridLines[i][1] = sf::Vertex(
+            sf::Vector2f(currentXCoord+0.5, maxYCoord+0.5),
+            sf::Color::Black
+        );
+
     }
 
-    for (size_t i = 0; i < verticalGridLines.size(); i++) {
-
+    for (int i = 0; i < numLinesVertical; i++) {
+        verticalGridLines[i] = sf::VertexArray(sf::Lines, 2);
+        if (verticalGridLines[i].getVertexCount() != 2) {
+            verticalGridLines[i].resize(2);
+        }
+        float maxXCoord = ScreenData::screenSize.x;
+        float currentYCoord = i * ScreenData::pixelSize;
+        verticalGridLines[i][0] = sf::Vertex(
+            sf::Vector2f(ScreenData::ctrlPanelSize.x+0.5, currentYCoord+0.5),
+            sf::Color::Black
+        );
+        verticalGridLines[i][1] = sf::Vertex(
+            sf::Vector2f(maxXCoord+0.5, currentYCoord+0.5),
+            sf::Color::Black
+        );
     }
 
 }
@@ -93,15 +128,16 @@ void graphics::resize_all() {
     using graphics::ScreenData;
 
     ScreenData::screenSize = w.getSize();
-    int panel_width = clamp<int>(ScreenData::screenSize.x/5, 50, 200);
+    int panel_width = clamp<int>(ScreenData::screenSize.x/5, 50, 150);
     ScreenData::ctrlPanelSize = sf::Vector2f(static_cast<float>(panel_width), ScreenData::screenSize.y);
     ctrlPanelBody.setSize(ScreenData::ctrlPanelSize);
     ctrlPanelBody.setPosition(0,0);
 
+    ScreenData::gridSize.x = ScreenData::screenSize.x - ScreenData::ctrlPanelSize.x;
+    ScreenData::gridSize.y = ScreenData::screenSize.y;
+
     resize_text(runningStatus, ctrlPanelBody.getLocalBounds());
     resize_text(iterationCount, ctrlPanelBody.getLocalBounds());
-
-    // std::cout << "Panel size: " << ScreenData::screenSize.x << " " << ScreenData::screenSize.y << "\n";
 
     reset_grid();
 
