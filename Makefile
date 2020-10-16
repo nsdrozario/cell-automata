@@ -13,9 +13,20 @@ $(OBJ_DIR)%.o: %.cpp
 build:	$(OBJS)
 	$(CXX) $(OBJS) -o bin/cell_automata_simulator $(LDFLAGS)
 
+.PHONY: clean
+clean:
+	rm -rf bin obj dist
+	mkdir bin
+	mkdir obj
+	mkdir dist
+
 .PHONY: package
 package: build
 	rm -rf dist/
 	cp bin dist -r -v
 	cp scripts dist -r
 	cp font dist -r
+
+.PHONY: test
+test: package
+	./dist/cell_automata_simulator

@@ -22,6 +22,11 @@ void graphics::init_style() {
     ctrlPanelBody.setOutlineColor(sf::Color::Black);
     ctrlPanelBody.setOutlineThickness(2.0f);
 
+    // text
+
+    runningStatus.setString("State: Paused [SPACE]");
+    
+
     // vertex arrays
     for (sf::VertexArray v : horizontalGridLines) {
         v.setPrimitiveType(sf::Lines);
