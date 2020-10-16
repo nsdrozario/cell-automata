@@ -25,6 +25,7 @@ namespace cell_automata {
                 static sf::Vector2u screenSize;
                 static sf::Vector2f ctrlPanelSize;
                 static sf::Vector2f gridSize;
+                static int pixelSize;
         };
 
         struct GraphicsState {
@@ -37,6 +38,7 @@ namespace cell_automata {
         void reset_grid();
         template <class T> 
         T clamp(T x, T minimum, T maximum);
+
     }
 }
 
