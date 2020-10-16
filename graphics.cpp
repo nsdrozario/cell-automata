@@ -14,6 +14,7 @@ sf::Font defaultFont;
 sf::Vector2u graphics::ScreenData::screenSize;
 sf::Vector2f graphics::ScreenData::ctrlPanelSize;
 sf::Vector2f graphics::ScreenData::gridSize;
+unsigned int graphics::ScreenData::pixelSize = 16; // default value
 
 bool graphics::GraphicsState::gridVisible;
 
@@ -27,21 +28,40 @@ T graphics::clamp(T x, T minimum, T maximum) {
     }
 }
 
-void graphics::reset_grid() {
+void graphics::create_grid() {
 
     for (sf::VertexArray v : horizontalGridLines) {
         v.setPrimitiveType(sf::Lines);
-        for (size_t it = 0; it < v.getVertexCount(); it++) {
-            sf::Vertex v_0 = v[it];
-            v_0.color = sf::Color(sf::Color::Black);
-        }
+        v.resize(2);
+        v[0].color = sf::Color::Black;
+        v[1].color = sf::Color::Black;
     }
     for (sf::VertexArray v : verticalGridLines) {
         v.setPrimitiveType(sf::Lines);
-        for (size_t it = 0; it < v.getVertexCount(); it++) {
-            sf::Vertex v_0 = v[it];
-            v_0.color = sf::Color(sf::Color::Black);
-        }
+        v.resize(2);
+        v[0].color = sf::Color::Black;
+        v[1].color = sf::Color::Black;
+    }
+
+}
+
+void graphics::reset_grid() {
+
+    unsigned int numLinesHorizontal = static_cast<unsigned int> (ScreenData::gridSize.x / ScreenData::pixelSize);
+    unsigned int numLinesVertical = static_cast<unsigned int> (ScreenData::gridSize.y / ScreenData::pixelSize);
+
+    horizontalGridLines.resize(numLinesHorizontal);
+    verticalGridLines.resize(numLinesVertical);
+
+    for (size_t i = 0; i < horizontalGridLines.size(); i++) {
+        sf::VertexArray currentLine = horizontalGridLines[i];
+        float maxYCoord = ScreenData::gridSize.y;
+        float currentXCoord;
+        currentLine[0] = sf::Vector2f();
+    }
+
+    for (size_t i = 0; i < verticalGridLines.size(); i++) {
+
     }
 
 }
