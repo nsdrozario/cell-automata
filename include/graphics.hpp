@@ -5,7 +5,7 @@
 #include <vector>
 #include "cell_automata.hpp"
 
-#define DEFAULT_FONT_PATH "font/Montserrat-Black.ttf"
+#define DEFAULT_FONT_PATH "font/Montserrat-Light.ttf"
 
 extern sf::RenderWindow w;
 extern sf::Event e;
@@ -32,6 +32,7 @@ namespace cell_automata {
         };
 
         void resize_all();
+        void resize_text(sf::Text &t, const sf::FloatRect &bounds);
         void init_style();
         void reset_grid();
         template <class T> 

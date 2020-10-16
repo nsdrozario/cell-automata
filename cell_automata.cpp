@@ -22,13 +22,15 @@ extern sf::Font defaultFont;
 void draw_main() {
 
     // 
+
+    runningStatus.setString("State: Paused [SPACE]");
+
     w.draw(ctrlPanelBody);
     w.draw(runningStatus);
     w.draw(iterationCount);
 
     // draw squares
     
-
     // draw grid lines
     if (cell_automata::graphics::GraphicsState::gridVisible) {
         for (sf::VertexArray v : horizontalGridLines) {
@@ -52,7 +54,7 @@ int main () {
     );
 
     cell_automata::graphics::init_style();
-
+    cell_automata::graphics::resize_all();
     while (w.isOpen()) {
         while (w.pollEvent(e)) {
             if (e.type == sf::Event::Closed) {

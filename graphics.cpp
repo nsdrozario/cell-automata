@@ -1,4 +1,7 @@
 #include <graphics.hpp>
+#include <iostream>
+#include <string>
+
 using namespace cell_automata;
 
 sf::RectangleShape ctrlPanelBody;
@@ -26,8 +29,6 @@ T graphics::clamp(T x, T minimum, T maximum) {
 
 void graphics::reset_grid() {
 
-
-
     for (sf::VertexArray v : horizontalGridLines) {
         v.setPrimitiveType(sf::Lines);
         for (size_t it = 0; it < v.getVertexCount(); it++) {
@@ -45,14 +46,42 @@ void graphics::reset_grid() {
 
 }
 
+void graphics::resize_text(sf::Text &t, const sf::FloatRect &bounds) {
+    /* 
+        Set character size and scale accordingly to desired bounding box
+    */
+    std::string text = t.getString();
+    t.setCharacterSize(ScreenData::ctrlPanelSize.x / (text.length()/3));
+    sf::FloatRect textBounds = t.getLocalBounds();
+
+    if (textBounds.width > bounds.width) {
+        float ratio = bounds.width / textBounds.width;
+        t.setScale(ratio, 1);
+        t.setCharacterSize(t.getCharacterSize()-1);
+    }
+
+    if (textBounds.height > bounds.height) {
+        float ratio = bounds.height / textBounds.height;
+        t.setScale(1, ratio);
+        t.setCharacterSize(t.getCharacterSize()-1);
+    }
+
+}
+
 void graphics::resize_all() {
 
     using graphics::ScreenData;
 
     ScreenData::screenSize = w.getSize();
-    int panel_width = clamp<int>(ScreenData::screenSize.x/5, 50, 400);
+    int panel_width = clamp<int>(ScreenData::screenSize.x/5, 50, 200);
     ScreenData::ctrlPanelSize = sf::Vector2f(static_cast<float>(panel_width), ScreenData::screenSize.y);
     ctrlPanelBody.setSize(ScreenData::ctrlPanelSize);
+    ctrlPanelBody.setPosition(0,0);
+
+    resize_text(runningStatus, ctrlPanelBody.getLocalBounds());
+    resize_text(iterationCount, ctrlPanelBody.getLocalBounds());
+
+    // std::cout << "Panel size: " << ScreenData::screenSize.x << " " << ScreenData::screenSize.y << "\n";
 
     reset_grid();
 
