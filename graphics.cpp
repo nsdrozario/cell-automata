@@ -1,6 +1,6 @@
 #include <graphics.hpp>
-#include <iostream>
 #include <string>
+#include <cell_automata.hpp>
 
 using namespace cell_automata;
 
@@ -28,34 +28,6 @@ T graphics::clamp(T x, T minimum, T maximum) {
     }
 }
 
-/*
-void graphics::create_grid() {
-
-    int numLinesHorizontal = static_cast<int> (ScreenData::gridSize.x / ScreenData::pixelSize);
-    int numLinesVertical = static_cast<int> (ScreenData::gridSize.y / ScreenData::pixelSize);
-
-    horizontalGridLines.resize(numLinesHorizontal);
-    verticalGridLines.resize(numLinesVertical);
-
-    for (int i = 0; i < numLinesHorizontal; i++) {
-        sf::VertexArray v = horizontalGridLines[i];
-        v.setPrimitiveType(sf::Lines);
-        v.resize(2);
-        v[0].color = sf::Color::Black;
-        v[1].color = sf::Color::Black;
-    }
-
-    for (int i = 0; i < numLinesVertical; i++) {
-        sf::VertexArray v = verticalGridLines[i];
-        v.setPrimitiveType(sf::Lines);
-        v.resize(2);
-        v[0].color = sf::Color::Black;
-        v[1].color = sf::Color::Black;
-    }
-
-}
-*/
-
 void graphics::reset_grid() {
 
     int numLinesHorizontal = static_cast<int> (ScreenData::gridSize.x / ScreenData::pixelSize);
@@ -79,6 +51,12 @@ void graphics::reset_grid() {
             sf::Vector2f(currentXCoord+0.5, maxYCoord+0.5),
             sf::Color::Black
         );
+
+        util::data.resize(numLinesHorizontal);
+
+        for (std::vector<cell> v : util::data) {
+            v.resize(numLinesVertical);
+        }
 
     }
 

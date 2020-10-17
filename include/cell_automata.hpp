@@ -22,6 +22,7 @@ namespace cell_automata {
 
         static cell *access_cell(int x, int y); // will return nullptr if coordinates are invalid (nil in Lua)
         static void load_configs();
+
     };
 
     struct runtime_state {

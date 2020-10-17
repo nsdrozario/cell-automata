@@ -5,7 +5,6 @@ sf::RenderWindow w;
 sf::Event e;
 sol::state lua_state;
 
-
 /*
 
 [Elements to keep track of]
