@@ -7,7 +7,7 @@
 #include <map>
 #include <vector>
 #include <string>
-
+#include <utility>
 
 namespace cell_automata {
     
@@ -15,9 +15,12 @@ namespace cell_automata {
         std::map<std::string, sol::object> data;
     };
 
+    
+
     struct util {
         static std::vector<std::vector<cell>> data;
         static sol::protected_function callback;
+        
         static unsigned int pixel_size;
 
         static cell *access_cell(int x, int y); // will return nullptr if coordinates are invalid (nil in Lua)
