@@ -4,6 +4,7 @@
 sf::RenderWindow w;
 sf::Event e;
 sol::state lua_state;
+sf::Vector2f mousePosition;
 
 /*
 
@@ -18,13 +19,23 @@ extern std::vector<sf::VertexArray> verticalGridLines;
 extern sf::Font defaultFont;
 */
 
+using namespace cell_automata;
+
 void draw_main() {
 
+    // draw controls
     w.draw(ctrlPanelBody);
     w.draw(runningStatus);
     w.draw(iterationCount);
 
-    if (cell_automata::graphics::GraphicsState::gridVisible) {
+    // draw mouse selection
+
+    
+
+    // draw contents of util::data
+
+    // draw grid lines
+    if (graphics::GraphicsState::gridVisible) {
 
         for (sf::VertexArray v : horizontalGridLines) {
             w.draw(v);
@@ -48,8 +59,8 @@ int main () {
     "Cellular Automata Simulation"
     );
 
-    cell_automata::graphics::init_style();
-    cell_automata::graphics::resize_all();
+    graphics::init_style();
+    graphics::resize_all();
     
     while (w.isOpen()) {
         while (w.pollEvent(e)) {
@@ -61,11 +72,23 @@ int main () {
                         0, 0, e.size.width, e.size.height
                     )
                 ));
-                cell_automata::graphics::resize_all();
+                graphics::resize_all();
             }
         }
 
         w.clear(sf::Color::White);
+
+        mousePosition = w.mapPixelToCoords(sf::Mouse::getPosition());
+
+        // determine cursor hovering position
+        if (graphics::ScreenData::gridArea.contains(mousePosition)) {
+
+            unsigned int mouseX = static_cast<unsigned int>(mousePosition.x/static_cast<float>(graphics::ScreenData::pixelSize));
+            unsigned int mouseY = static_cast<unsigned int>(mousePosition.y/static_cast<float>(graphics::ScreenData::pixelSize));
+            graphics::GraphicsState::cursorPositionGridCoords = sf::Vector2u(mouseX, mouseY);
+
+        }
+
 
         draw_main();
 

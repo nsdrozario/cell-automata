@@ -114,6 +114,14 @@ void graphics::resize_all() {
     ScreenData::gridSize.x = ScreenData::screenSize.x - ScreenData::ctrlPanelSize.x;
     ScreenData::gridSize.y = ScreenData::screenSize.y;
 
+    ScreenData::gridArea = sf::FloatRect(
+        sf::Vector2f(
+            ScreenData::ctrlPanelSize.x,
+            0
+        ),
+        ScreenData::gridSize
+    );
+
     resize_text(runningStatus, ctrlPanelBody.getLocalBounds());
     resize_text(iterationCount, ctrlPanelBody.getLocalBounds());
 
