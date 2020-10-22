@@ -5,6 +5,7 @@ sf::RenderWindow w;
 sf::Event e;
 sol::state lua_state;
 sf::Vector2f mousePosition;
+sf::Vector2f tmpMousePosition;
 
 /*
 
@@ -28,11 +29,17 @@ void draw_main() {
     w.draw(runningStatus);
     w.draw(iterationCount);
 
-    // draw mouse selection
-
-    
-
     // draw contents of util::data
+
+
+
+    // draw mouse selection
+    graphics::GraphicsState::cursor.setPosition(
+        (static_cast<float>(graphics::GraphicsState::cursorPositionGridCoords.x) * graphics::ScreenData::pixelSize) + graphics::ScreenData::ctrlPanelSize.x,
+        (static_cast<float>(graphics::GraphicsState::cursorPositionGridCoords.y) * graphics::ScreenData::pixelSize)
+    );
+
+    w.draw(graphics::GraphicsState::cursor);
 
     // draw grid lines
     if (graphics::GraphicsState::gridVisible) {
@@ -61,7 +68,7 @@ int main () {
 
     graphics::init_style();
     graphics::resize_all();
-    
+
     while (w.isOpen()) {
         while (w.pollEvent(e)) {
             if (e.type == sf::Event::Closed) {
@@ -78,13 +85,17 @@ int main () {
 
         w.clear(sf::Color::White);
 
-        mousePosition = w.mapPixelToCoords(sf::Mouse::getPosition());
+        tmpMousePosition = sf::Vector2f(sf::Mouse::getPosition(w));
+        mousePosition = sf::Vector2f(
+            tmpMousePosition.x-graphics::ScreenData::ctrlPanelSize.x, 
+            tmpMousePosition.y
+        );
 
         // determine cursor hovering position
         if (graphics::ScreenData::gridArea.contains(mousePosition)) {
 
-            unsigned int mouseX = static_cast<unsigned int>(mousePosition.x/static_cast<float>(graphics::ScreenData::pixelSize));
-            unsigned int mouseY = static_cast<unsigned int>(mousePosition.y/static_cast<float>(graphics::ScreenData::pixelSize));
+            unsigned int mouseX = std::round(mousePosition.x/static_cast<float>(graphics::ScreenData::pixelSize));
+            unsigned int mouseY = std::round(mousePosition.y/static_cast<float>(graphics::ScreenData::pixelSize));
             graphics::GraphicsState::cursorPositionGridCoords = sf::Vector2u(mouseX, mouseY);
 
         }

@@ -26,6 +26,10 @@ void graphics::init_style() {
 
     runningStatus.setString("State: Paused [SPACE]");
     
+    // cursor
+
+    GraphicsState::cursor.setFillColor(sf::Color(150,255,255));
+    GraphicsState::cursor.setSize(sf::Vector2f(static_cast<float>(ScreenData::pixelSize), static_cast<float>(ScreenData::pixelSize)));
 
     // vertex arrays
     for (sf::VertexArray v : horizontalGridLines) {

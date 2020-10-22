@@ -14,10 +14,13 @@ sf::Font defaultFont;
 sf::Vector2u graphics::ScreenData::screenSize;
 sf::Vector2f graphics::ScreenData::ctrlPanelSize;
 sf::Vector2f graphics::ScreenData::gridSize;
-int graphics::ScreenData::pixelSize = 16; // default value
+int graphics::ScreenData::pixelSize = 64; // default value
+sf::FloatRect graphics::ScreenData::gridArea;
 
 bool graphics::GraphicsState::gridVisible = true;
-
+sf::Vector2u graphics::GraphicsState::cursorPositionGridCoords;
+sf::RectangleShape graphics::GraphicsState::cursor;
+std::vector<std::vector<sf::RectangleShape>> graphics::GraphicsState::squares;
 
 template <class T>
 T graphics::clamp(T x, T minimum, T maximum) {
