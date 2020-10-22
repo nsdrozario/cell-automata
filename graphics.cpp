@@ -1,6 +1,6 @@
 #include <graphics.hpp>
-#include <iostream>
 #include <string>
+#include <cell_automata.hpp>
 
 using namespace cell_automata;
 
@@ -14,10 +14,13 @@ sf::Font defaultFont;
 sf::Vector2u graphics::ScreenData::screenSize;
 sf::Vector2f graphics::ScreenData::ctrlPanelSize;
 sf::Vector2f graphics::ScreenData::gridSize;
-int graphics::ScreenData::pixelSize = 16; // default value
+int graphics::ScreenData::pixelSize = 64; // default value
+sf::FloatRect graphics::ScreenData::gridArea;
 
 bool graphics::GraphicsState::gridVisible = true;
-
+sf::Vector2u graphics::GraphicsState::cursorPositionGridCoords;
+sf::RectangleShape graphics::GraphicsState::cursor;
+std::vector<std::vector<sf::RectangleShape>> graphics::GraphicsState::squares;
 
 template <class T>
 T graphics::clamp(T x, T minimum, T maximum) {
@@ -27,34 +30,6 @@ T graphics::clamp(T x, T minimum, T maximum) {
         return (x < minimum) ? minimum : maximum; // if it isn't within the closed interval and isn't less than minimum, it has to be greater than maximum
     }
 }
-
-/*
-void graphics::create_grid() {
-
-    int numLinesHorizontal = static_cast<int> (ScreenData::gridSize.x / ScreenData::pixelSize);
-    int numLinesVertical = static_cast<int> (ScreenData::gridSize.y / ScreenData::pixelSize);
-
-    horizontalGridLines.resize(numLinesHorizontal);
-    verticalGridLines.resize(numLinesVertical);
-
-    for (int i = 0; i < numLinesHorizontal; i++) {
-        sf::VertexArray v = horizontalGridLines[i];
-        v.setPrimitiveType(sf::Lines);
-        v.resize(2);
-        v[0].color = sf::Color::Black;
-        v[1].color = sf::Color::Black;
-    }
-
-    for (int i = 0; i < numLinesVertical; i++) {
-        sf::VertexArray v = verticalGridLines[i];
-        v.setPrimitiveType(sf::Lines);
-        v.resize(2);
-        v[0].color = sf::Color::Black;
-        v[1].color = sf::Color::Black;
-    }
-
-}
-*/
 
 void graphics::reset_grid() {
 
@@ -79,6 +54,12 @@ void graphics::reset_grid() {
             sf::Vector2f(currentXCoord+0.5, maxYCoord+0.5),
             sf::Color::Black
         );
+
+        util::data.resize(numLinesHorizontal);
+
+        for (std::vector<cell> v : util::data) {
+            v.resize(numLinesVertical);
+        }
 
     }
 
@@ -135,6 +116,14 @@ void graphics::resize_all() {
 
     ScreenData::gridSize.x = ScreenData::screenSize.x - ScreenData::ctrlPanelSize.x;
     ScreenData::gridSize.y = ScreenData::screenSize.y;
+
+    ScreenData::gridArea = sf::FloatRect(
+        sf::Vector2f(
+            ScreenData::ctrlPanelSize.x,
+            0
+        ),
+        ScreenData::gridSize
+    );
 
     resize_text(runningStatus, ctrlPanelBody.getLocalBounds());
     resize_text(iterationCount, ctrlPanelBody.getLocalBounds());
